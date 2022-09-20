@@ -1,7 +1,9 @@
-docker tag mariadb-replication/single-node thinkpad.local:5000/mariadb-replication/single-node
-docker tag mariadb-replication/primary thinkpad.local:5000/mariadb-replication/primary
-docker tag mariadb-replication/replica thinkpad.local:5000/mariadb-replication/replica
+host="thinkpad.local:5000"
 
-docker push thinkpad.local:5000/mariadb-replication/single-node
-docker push thinkpad.local:5000/mariadb-replication/primary
-docker push thinkpad.local:5000/mariadb-replication/replica
+docker tag mariadb-replication/single-node $host/mariadb-replication/single-node
+docker tag mariadb-replication/primary $host/mariadb-replication/primary
+docker tag mariadb-replication/replica $host/mariadb-replication/replica
+
+docker push $host/mariadb-replication/single-node
+docker push $host/mariadb-replication/primary
+docker push $host/mariadb-replication/replica
