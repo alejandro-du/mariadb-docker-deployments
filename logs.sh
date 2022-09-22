@@ -15,5 +15,9 @@ echo "***************** show replica status ******************"
 docker exec -it mariadb-test-2 mariadb --password='password' --execute='show replica status\G'
 
 echo
+echo "***************** show replica status ******************"
+docker exec -it mariadb-test-3 mariadb --password='password' --execute='show replica status\G'
+
+echo
 echo "********************** containers **********************"
 docker container ls -a

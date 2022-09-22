@@ -40,7 +40,7 @@ The following sections show examples on how to use the images. Keep in mind that
 A container running [MariaDB Community Server](https://mariadb.com/products/community-server).
 
 ```bash
-docker run --name mariadb --detach --net host single-node
+docker run --name mariadb --detach --net host alejandrodu/mariadb-single-node
 ```
 
 ### Primary
@@ -48,15 +48,17 @@ docker run --name mariadb --detach --net host single-node
 A container running [MariaDB Community Server](https://mariadb.com/products/community-server) ready to act as a primary node.
 
 ```bash
-docker run --name mariadb --detach --net host single-node
+docker run --name mariadb --detach --net host alejandrodu/mariadb-primary
 ```
 
 ### Replica
 
-A container running [MariaDB Community Server](https://mariadb.com/products/community-server) ready to act as a primary node.
+A container running [MariaDB Community Server](https://mariadb.com/products/community-server) as a replica in read-only mode.
 
 ```bash
-docker run --detach --name mariadb-test-2 --net host --env MARIADB_PRIMARY_HOST=<PRIMARY_SERVER_IP_ADDRESS> replica
+docker run --detach --name mariadb-test-2 --net host --env MARIADB_PRIMARY_HOST='<PRIMARY_SERVER_IP_ADDRESS>' alejandrodu/mariadb-replica
 ```
+
+Replace `<PRIMARY_SERVER_IP_ADDRESS>` with the ip address of the the primary node. To create more replicas specify add `--server-id <SERVER_ID>` replacing `<SERVER_ID>` with an integer >= 3.
 
 ✏️ **Note:** If you run this on the same machine as the replica, change the port (for example `--publish 3307:3306`).
