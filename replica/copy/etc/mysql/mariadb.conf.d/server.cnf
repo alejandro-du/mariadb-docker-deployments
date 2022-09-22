@@ -1,3 +1,4 @@
 [mariadb]
 log_bin         = replica_log_bin
 server_id       = 2
+read_only		= 1

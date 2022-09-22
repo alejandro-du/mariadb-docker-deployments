@@ -9,13 +9,21 @@ This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/
 
 ## Usage
 
-  ⚠️ **WARNING**: These images are not intended for production environments. In most of the cases, if not all, the `root` user password is `password`! Also most images, if not all, create a `demo` database that the `user` user can access. This user's password also is `password`.
+  ⚠️ **WARNING**: These images are not intended usage in for production environments. In most of the cases, if not all, the `root` user password is `password`! Also most images, if not all, create a `demo` database that the `user` user can access. This user's password also is `password`.
 
-Build and publish the images:
+Build the images:
 
   * Build the images by running the **build.sh** script.
   * Check the logs with **logs.sh**.
-  * (Optional) publish the images on a Docker registry by customizing the `host` variable in the **publish.sh** script.
+
+### Publish the images (optional)
+
+Create a private registry:
+
+```shell
+docker run -d --restart=always --name docker-registry --mount source=docker-registry,target=/var/lib/registry -p 5000:5000 --env REGISTRY_STORAGE_DELETE_ENABLED=true registry:2
+```
+publish the images in the Docker registry by customizing the `host` variable in the **publish.sh** script.
 
 ## Examples
 
@@ -32,7 +40,7 @@ The following sections show examples on how to use the images. Keep in mind that
 A container running [MariaDB Community Server](https://mariadb.com/products/community-server).
 
 ```bash
-docker run --name mariadb --detach --net host mariadb-replication/single-node
+docker run --name mariadb --detach --net host single-node
 ```
 
 ### Primary
@@ -40,7 +48,7 @@ docker run --name mariadb --detach --net host mariadb-replication/single-node
 A container running [MariaDB Community Server](https://mariadb.com/products/community-server) ready to act as a primary node.
 
 ```bash
-docker run --name mariadb --detach --net host mariadb-replication/single-node
+docker run --name mariadb --detach --net host single-node
 ```
 
 ### Replica
@@ -48,7 +56,7 @@ docker run --name mariadb --detach --net host mariadb-replication/single-node
 A container running [MariaDB Community Server](https://mariadb.com/products/community-server) ready to act as a primary node.
 
 ```bash
-docker run --detach --name mariadb-test-2 --net host --env MARIADB_PRIMARY_HOST=<PRIMARY_SERVER_IP_ADDRESS> mariadb-replication/replica
+docker run --detach --name mariadb-test-2 --net host --env MARIADB_PRIMARY_HOST=<PRIMARY_SERVER_IP_ADDRESS> replica
 ```
 
-Note: If you run this on the same machine as the replica, change the port (for example `--publish 3307:3306`).
+✏️ **Note:** If you run this on the same machine as the replica, change the port (for example `--publish 3307:3306`).

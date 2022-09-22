@@ -1,8 +1,8 @@
 #!/bin/bash
 echo "************************ build *************************"
 
-docker build --file mariadb-replication/single-node/Dockerfile --tag mariadb-replication/single-node .
-docker build --file mariadb-replication/primary/Dockerfile --tag mariadb-replication/primary .
-docker build --file mariadb-replication/replica/Dockerfile --tag mariadb-replication/replica .
+docker build --file single-node/Dockerfile --tag alejandrodu/mariadb-single-node .
+docker build --file primary/Dockerfile --tag alejandrodu/mariadb-primary .
+docker build --file replica/Dockerfile --tag alejandrodu/mariadb-replica .
 
 echo

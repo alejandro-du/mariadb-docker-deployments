@@ -1,9 +1,9 @@
 host="thinkpad.local:5000"
 
-docker tag mariadb-replication/single-node $host/mariadb-replication/single-node
-docker tag mariadb-replication/primary $host/mariadb-replication/primary
-docker tag mariadb-replication/replica $host/mariadb-replication/replica
+docker tag alejandrodu/mariadb-single-node $host/alejandrodu/mariadb-single-node
+docker tag alejandrodu/mariadb-primary $host/alejandrodu/mariadb-primary
+docker tag alejandrodu/mariadb-replica $host/alejandrodu/mariadb-replica
 
-docker push $host/mariadb-replication/single-node
-docker push $host/mariadb-replication/primary
-docker push $host/mariadb-replication/replica
+docker push $host/alejandrodu/mariadb-single-node
+docker push $host/alejandrodu/mariadb-primary
+docker push $host/alejandrodu/mariadb-replica
