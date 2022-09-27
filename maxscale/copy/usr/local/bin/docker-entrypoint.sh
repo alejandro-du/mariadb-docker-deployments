@@ -2,25 +2,31 @@
 echo "Starting MaxScale..."
 service maxscale start
 
-echo "Creating servers..."
-maxctrl create server mariadb-1 $MARIADB_HOST_1
-maxctrl create server mariadb-2 $MARIADB_HOST_2
-maxctrl create server mariadb-3 $MARIADB_HOST_3
+servers=""
 
-echo "Creating monitor..."
+for ((n = 1; n <= 100; n++)); do
+	host="MARIADB_HOST_$n"
+	if ! [[ -z "${!host}" ]]; then
+		echo "Creating server mariadb-$n..."
+		servers="$servers mariadb-$n"
+		maxctrl create server mariadb-$n ${!host}
+	fi
+done
+
+echo "Creating monitor for servers $servers..."
 maxctrl create monitor mdb_monitor mariadbmon \
-      --monitor-user maxscale --monitor-password 'password' \
-      --servers mariadb-1 mariadb-2 mariadb-3
+	--monitor-user maxscale --monitor-password 'password' \
+	--servers $servers
 
-echo "Creating Read/Write Split Router service..."
-maxctrl create service query_router_service readwritesplit  \
-      user=maxscale \
-      password=password \
-      --servers mariadb-1 mariadb-2 mariadb-3
+echo "Creating Read/Write Split Router service for servers $servers..."
+maxctrl create service query_router_service readwritesplit \
+	user=maxscale \
+	password=password \
+	--servers $servers
 
 echo "Creating listener..."
 maxctrl create listener query_router_service query_router_listener 4000 \
-      --protocol=MariaDBClient
+	--protocol=MariaDBClient
 
 echo "Restarting MaxScale"
 service maxscale stop
