@@ -62,3 +62,19 @@ docker run --detach --name mariadb-test-2 --net host --env MARIADB_PRIMARY_HOST=
 Replace `<PRIMARY_SERVER_IP_ADDRESS>` with the ip address of the the primary node. To create more replicas specify add `--server-id <SERVER_ID>` replacing `<SERVER_ID>` with an integer >= 3.
 
 ✏️ **Note:** If you run this on the same machine as the replica, change the port (for example `--publish 3307:3306`).
+
+### MaxScale
+
+A container running [MaxScale](https://mariadb.com/products/maxscale/).
+
+```bash
+	docker run --detach --name mariadb-maxscale-1 \
+		--env MARIADB_HOST_1=<HOST_IP_1> \
+		--env MARIADB_HOST_2=<HOST_IP_1> \
+		--env MARIADB_HOST_3=<HOST_IP_1> \
+		alejandrodu/mariadb-maxscale
+```
+
+Replace `<MARIADB_HOST_X>` with the ip address of the the MariaDB server to add. You can add as many servers as needed.
+
+✏️ **Note:** If you run this on the same machine as the replica, change the port (for example `--publish 3307:3306`).
