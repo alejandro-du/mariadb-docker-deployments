@@ -4,5 +4,6 @@ echo "************************ build *************************"
 docker build --file single-node/Dockerfile --tag alejandrodu/mariadb-single-node .
 docker build --file primary/Dockerfile --tag alejandrodu/mariadb-primary .
 docker build --file replica/Dockerfile --tag alejandrodu/mariadb-replica .
+docker build --file maxscale/Dockerfile --tag alejandrodu/mariadb-maxscale .
 
 echo
