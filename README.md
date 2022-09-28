@@ -29,7 +29,19 @@ docker run --name docker-registry \
 	--env REGISTRY_STORAGE_DELETE_ENABLED=true \
 	registry:2
 ```
-Publish the images in the Docker registry by customizing the `host` variable in the **publish.sh** script.
+Publish the images in the Docker registry by passing the registry host to the **publish.sh** script:
+
+```
+publish.sh your.hostname.local:5000
+```
+
+You might have to list the new registry as insecure in the `/etc/docker/daemon.json` file of any machine from which you want to use the images:
+
+```json
+{
+  "insecure-registries" : ["your.hostname.local:5000"]
+}
+```
 
 ## Examples
 

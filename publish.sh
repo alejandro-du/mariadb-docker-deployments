@@ -1,4 +1,4 @@
-host="thinkpad.local:5000"
+host=${1:-thinkpad.local:5000}
 
 docker tag alejandrodu/mariadb-single-node $host/alejandrodu/mariadb-single-node
 docker tag alejandrodu/mariadb-primary $host/alejandrodu/mariadb-primary
