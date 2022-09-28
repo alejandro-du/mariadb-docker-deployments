@@ -1,3 +1,4 @@
+echo "************************ publish *************************"
 host=${1:-thinkpad.local:5000}
 
 docker tag alejandrodu/mariadb-single-node $host/alejandrodu/mariadb-single-node
