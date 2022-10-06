@@ -3,4 +3,5 @@ GRANT REPLICATION REPLICA ON *.* TO 'replication_user'@'%';
 RESET MASTER;
 
 CREATE USER 'maxscale'@'%' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON *.* TO 'maxscale'@'%';
+GRANT SELECT ON mysql.* TO 'maxscale'@'%';
+GRANT SHOW DATABASES, SLAVE MONITOR ON *.* to 'maxscale'@'%';
