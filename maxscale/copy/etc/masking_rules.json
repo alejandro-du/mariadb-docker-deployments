@@ -1,0 +1,16 @@
+{
+	"rules": [
+		{
+			"replace": {
+				"column": "credit_card_number",
+				"match": "(?<!^.).+(?=.{4})"
+			},
+			"with": {
+				"fill": "*"
+			},
+			"applies_to": [
+				"'user'@'%'"
+			]
+		}
+	]
+}
