@@ -24,8 +24,8 @@ maxctrl create service query_router_service readwritesplit \
 	password=password \
 	--servers $servers
 
-echo "Creating listener..."
-maxctrl create listener query_router_service query_router_listener 4000 \
+echo "Creating SQL listener..."
+maxctrl create listener query_router_service sql_listener 4000 \
 	--protocol=MariaDBClient
 
 echo "Restarting MaxScale"
