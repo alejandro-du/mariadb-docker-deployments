@@ -87,7 +87,7 @@ docker run --name mariadb \
 	alejandrodu/mariadb-replica
 ```
 
-Replace `<PRIMARY_SERVER_IP_ADDRESS>` with the ip address of the the primary node. To create additional replicas add `--server-id <SERVER_ID>` replacing `<SERVER_ID>` with an integer >= 3. In orchestrated environments use the `$RANDOM` [variable](https://tldp.org/LDP/abs/html/randomvar.html).
+Replace `<PRIMARY_SERVER_IP_ADDRESS>` with the ip address of the the primary node.
 
 ✏️ **Note:** If you run this on the same machine as the primary or another replica, change the port (for example `--publish 3307:3306`).
 

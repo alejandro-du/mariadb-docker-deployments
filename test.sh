@@ -18,7 +18,7 @@ run_replica() {
 		--detach \
 		--publish $2:3306 \
 		--env MARIADB_PRIMARY_HOST=$primary_ip \
-		alejandrodu/mariadb-replica --server-id $1
+		alejandrodu/mariadb-replica
 	sleep 2
 }
 
@@ -31,6 +31,7 @@ run_maxscale() {
 	docker run --name mariadb-maxscale-1 \
 		--detach \
 		--publish 4000:4000 \
+		--publish 8989:8989 \
 		--env MARIADB_HOST_1=$host_ip_1 \
 		--env MARIADB_HOST_2=$host_ip_2 \
 		--env MARIADB_HOST_3=$host_ip_3 \
