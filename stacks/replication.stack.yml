@@ -5,7 +5,6 @@ services:
 
   replica:
     image: thinkpad.local:5000/alejandrodu/mariadb-replica
-    command: $(echo '--server_id 3')
     deploy:
       replicas: 2
     depends_on:
