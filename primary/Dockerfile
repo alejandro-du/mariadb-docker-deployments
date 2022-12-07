@@ -1,7 +1,7 @@
-FROM mariadb
-ENV MARIADB_ROOT_PASSWORD="password"
-ENV MARIADB_DATABASE="demo"
-ENV MARIADB_USER="user"
-ENV MARIADB_PASSWORD="password"
+FROM linuxserver/mariadb
+ENV MYSQL_ROOT_PASSWORD="password"
+ENV MYSQL_DATABASE="demo"
+ENV MYSQL_USER="user"
+ENV MYSQL_PASSWORD="password"
 COPY primary/copy/ /
 EXPOSE 3306

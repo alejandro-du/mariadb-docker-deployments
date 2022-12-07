@@ -1,0 +1,3 @@
+[mariadb]
+log_bin			= primary
+server_id		= 1

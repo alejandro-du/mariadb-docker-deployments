@@ -1,8 +1,8 @@
-FROM mariadb
-ENV MARIADB_ROOT_PASSWORD="password"
-ENV MARIADB_DATABASE="demo"
-ENV MARIADB_USER="user"
-ENV MARIADB_PASSWORD="password"
+FROM linuxserver/mariadb
+ENV MYSQL_ROOT_PASSWORD="password"
+ENV MYSQL_DATABASE="demo"
+ENV MYSQL_USER="user"
+ENV MYSQL_PASSWORD="password"
 COPY replica/copy/ /
-EXPOSE 3306
-ENTRYPOINT gosu mysql docker-entrypoint.sh --server-id $(shuf -i 2-1000000 -n 1)
+RUN echo "*/1 * * * * /bin/bash /start-replication.sh && crontab -r" >> /var/spool/cron/crontabs/root && chmod +x /start-replication.sh
+ENTRYPOINT crond && echo "server_id = $RANDOM" >> /config/custom.cnf && /init
