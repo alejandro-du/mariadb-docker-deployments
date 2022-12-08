@@ -1,3 +1,18 @@
 #!/bin/bash
 
-mariadb --password=$MYSQL_ROOT_PASSWORD -e "RESET REPLICA; START REPLICA;"
+mariadb --password=$MYSQL_ROOT_PASSWORD -e "
+	CHANGE MASTER TO
+	MASTER_HOST='$PRIMARY_SERVER_IP_ADDRESS',
+	MASTER_PORT=3306,
+	MASTER_USER='replication_user',
+	MASTER_PASSWORD='password',
+	MASTER_LOG_FILE='primary_log_bin.000002',
+	MASTER_LOG_POS=348,
+	MASTER_USE_GTID=replica_pos;
+	MASTER_CONNECT_RETRY=10;
+"
+
+mariadb --password=$MYSQL_ROOT_PASSWORD -e "
+	RESET REPLICA;
+	START REPLICA;
+"

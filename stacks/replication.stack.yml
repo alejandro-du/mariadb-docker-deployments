@@ -7,6 +7,8 @@ services:
 
   replica:
     image: 192.168.1.200:5000/alejandrodu/mariadb-arm-replica
+    environment:
+      PRIMARY_SERVER_IP_ADDRESS: primary
     ports:
     - "3307:3306"
     deploy:

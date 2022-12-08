@@ -3,7 +3,7 @@
 echo "************************ test *************************"
 
 ./clean.sh
-sleep 6
+sleep 7
 ./build.sh
 ./publish.sh
 

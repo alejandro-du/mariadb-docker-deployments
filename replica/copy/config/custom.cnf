@@ -1,5 +1,3 @@
 [mariadb]
-log_bin		= replica
+log_bin		= replica_log_bin
 read_only	= 1
-replicate_do_db	= demo
-event_scheduler = 1
