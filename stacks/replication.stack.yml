@@ -1,10 +1,10 @@
 version: "3.9"
 services:
   primary:
-    image: thinkpad.local:5000/alejandrodu/mariadb-primary
+    image: alejandrodu/mariadb-primary
 
   replica:
-    image: thinkpad.local:5000/alejandrodu/mariadb-replica
+    image: alejandrodu/mariadb-replica
     deploy:
       replicas: 2
     depends_on:
@@ -13,7 +13,7 @@ services:
       MARIADB_PRIMARY_HOST: primary
   
   maxscale:
-    image: thinkpad.local:5000/alejandrodu/mariadb-maxscale
+    image: alejandrodu/mariadb-maxscale
     command: --admin_host 0.0.0.0 --admin_secure_gui false
     ports:
       - 4000:4000
