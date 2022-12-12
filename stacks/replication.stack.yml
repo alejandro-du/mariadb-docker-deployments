@@ -1,12 +1,12 @@
 version: "3.9"
 services:
   primary:
-    image: 192.168.1.200:5000/alejandrodu/mariadb-arm-primary
+    image: alejandrodu/mariadb-arm-primary
     ports:
     - "3306:3306"
 
   replica:
-    image: 192.168.1.200:5000/alejandrodu/mariadb-arm-replica
+    image: alejandrodu/mariadb-arm-replica
     environment:
       PRIMARY_SERVER_IP_ADDRESS: primary
     ports:
