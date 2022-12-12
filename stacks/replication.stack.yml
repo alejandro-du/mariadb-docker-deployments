@@ -15,3 +15,16 @@ services:
       replicas: 2
     depends_on:
       - primary
+
+  visualizer:
+    image: alexellis2/visualizer-arm
+    ports:
+      - 9000:8080
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
