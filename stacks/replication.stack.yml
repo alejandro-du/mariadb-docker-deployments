@@ -12,7 +12,7 @@ services:
     ports:
     - "3307:3306"
     deploy:
-      replicas: 2
+      replicas: 5
     depends_on:
       - primary
 
