@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Starting MaxScale..."
-service maxscale start
+maxscale -U maxscale
 
 servers=""
 
@@ -29,6 +29,15 @@ maxctrl create listener query_router_service sql_listener 4000 \
 	--protocol=MariaDBClient
 
 echo "Restarting MaxScale"
-service maxscale stop
+PID=$(pgrep -x 'maxscale')
+if [[ ! -z $PID ]]; then
+    echo 'Sending SIGTERM'
+    kill $PID 2> /dev/null
+    PID=$(pgrep -x 'maxscale')
+    if [[ ! -z $PID ]]; then
+        echo 'Sending SIGKILL'
+        kill -9 $PID 2> /dev/null
+    fi
+fi
 
-maxscale -d -U maxscale -l stdout
+maxscale -U maxscale -d -l stdout
