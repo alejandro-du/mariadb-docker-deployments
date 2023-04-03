@@ -5,3 +5,4 @@ RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash &&
 	chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT docker-entrypoint.sh && maxscale -U maxscale
+EXPOSE 4000 8686 27017

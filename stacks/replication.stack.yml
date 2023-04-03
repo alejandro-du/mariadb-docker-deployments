@@ -3,10 +3,15 @@ services:
   primary:
     image: alejandrodu/mariadb-primary
 
-  replica:
+  replica1:
     image: alejandrodu/mariadb-replica
-    deploy:
-      replicas: 2
+    depends_on:
+      - mariadb-primary
+    environment:
+      MARIADB_PRIMARY_HOST: primary
+  
+  replica2:
+    image: alejandrodu/mariadb-replica
     depends_on:
       - mariadb-primary
     environment:
@@ -15,6 +20,10 @@ services:
   maxscale:
     image: alejandrodu/mariadb-maxscale
     command: --admin_host 0.0.0.0 --admin_secure_gui false
+    depends_on:
+      - primary
+      - replica1
+      - replica2
     ports:
       - 4000:4000
       - 8989:8989

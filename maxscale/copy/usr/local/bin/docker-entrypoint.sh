@@ -15,7 +15,7 @@ done
 
 echo "Creating monitor for servers $servers..."
 maxctrl create monitor mdb_monitor mariadbmon \
-	--monitor-user maxscale --monitor-password 'password' \
+	user='maxscale' password='password' \
 	--servers $servers
 
 echo "Creating Read/Write Split Router service for servers $servers..."
@@ -25,8 +25,7 @@ maxctrl create service query_router_service readwritesplit \
 	--servers $servers
 
 echo "Creating SQL listener..."
-maxctrl create listener query_router_service sql_listener 4000 \
-	--protocol=MariaDBClient
+maxctrl create listener query_router_service sql_listener 4000
 
 echo "Restarting MaxScale"
 PID=$(pgrep -x 'maxscale')
