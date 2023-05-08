@@ -9,14 +9,16 @@ services:
       - mariadb-primary
     environment:
       MARIADB_PRIMARY_HOST: primary
-  
+      MARIADB_PRIMARY_PORT: 3306
+
   replica2:
     image: alejandrodu/mariadb-replica
     depends_on:
       - mariadb-primary
     environment:
       MARIADB_PRIMARY_HOST: primary
-  
+      MARIADB_PRIMARY_PORT: 3306
+
   maxscale:
     image: alejandrodu/mariadb-maxscale
     command: --admin_host 0.0.0.0 --admin_secure_gui false

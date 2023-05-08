@@ -18,6 +18,7 @@ run_replica() {
 		--detach \
 		--publish $2:3306 \
 		--env MARIADB_PRIMARY_HOST=$primary_ip \
+		--env MARIADB_PRIMARY_PORT=3306 \
 		alejandrodu/mariadb-replica
 	sleep 2
 }

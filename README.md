@@ -25,7 +25,7 @@ docker run --name docker-registry \
 	--detach \
 	--restart=always \
 	--mount source=docker-registry,target=/var/lib/registry \
-	--net host \
+	--publish 5000:5000 \
 	--env REGISTRY_STORAGE_DELETE_ENABLED=true \
 	registry:2
 ```

@@ -5,7 +5,7 @@ function sql() {
 sql "
 	CHANGE MASTER TO
 		MASTER_HOST='$MARIADB_PRIMARY_HOST',
-		MASTER_PORT=3306,
+		MASTER_PORT=$MARIADB_PRIMARY_PORT,
 		MASTER_USER='replication_user',
 		MASTER_PASSWORD='password',
 		MASTER_LOG_FILE='primary_log_bin.000002',
