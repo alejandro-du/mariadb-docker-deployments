@@ -25,7 +25,7 @@ if [ -n "$MARIADB_CREATE_BACKUP_USER" ]; then
     BACKUP_USER=$(echo $MARIADB_CREATE_BACKUP_USER | cut -d':' -f1)
     BACKUP_PASSWORD=$(echo $MARIADB_CREATE_BACKUP_USER | cut -d':' -f2)
 
-    # Create backup user and grants
+    # Create backup user
     mariadb -e "CREATE USER '$BACKUP_USER'@'%' IDENTIFIED BY '$BACKUP_PASSWORD';"
     mariadb -e "GRANT RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR ON *.* TO '$BACKUP_USER'@'%';"
 fi
@@ -37,9 +37,28 @@ if [ -n "$MARIADB_CREATE_REPLICATION_USER" ]; then
     REPLICATION_USER=$(echo $MARIADB_CREATE_REPLICATION_USER | cut -d':' -f1)
     REPLICATION_PASSWORD=$(echo $MARIADB_CREATE_REPLICATION_USER | cut -d':' -f2)
 
-    # Create replication user in the primary server
+    # Create replication user
     mariadb -e "CREATE USER '$REPLICATION_USER'@'%' IDENTIFIED BY '$REPLICATION_PASSWORD';"
 	mariadb -e "GRANT REPLICATION REPLICA ON *.* TO '$REPLICATION_USER'@'%';"
+fi
+
+# If MARIADB_CREATE_MAXSCALE_USER is specified, create user for MaxScale
+if [ -n "$MARIADB_CREATE_MAXSCALE_USER" ]; then
+	echo "Creating MaxScale user..."
+    # Extract MaxScale user credentials from MARIADB_CREATE_MAXSCALE_USER variable
+    MAXSCALE_USER=$(echo $MARIADB_CREATE_MAXSCALE_USER | cut -d':' -f1)
+    MAXSCALE_PASSWORD=$(echo $MARIADB_CREATE_MAXSCALE_USER | cut -d':' -f2)
+
+    # Create MaxScale user
+    mariadb -e "CREATE USER '$MAXSCALE_USER'@'%' IDENTIFIED BY '$MAXSCALE_PASSWORD';"
+	mariadb -e "GRANT SHOW DATABASES, SUPER, REPLICATION CLIENT, RELOAD, PROCESS, SHOW DATABASES, EVENT ON *.* TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.columns_priv TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.db TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.procs_priv TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.proxies_priv TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.roles_mapping TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.tables_priv TO '$MAXSCALE_USER'@'%';"
+	mariadb -e "GRANT SELECT ON mysql.user TO '$MAXSCALE_USER'@'%';"
 fi
 
 # If MARIADB_RESTORE_FROM is specified, create backup and restore it
@@ -60,17 +79,15 @@ if [ -n "$MARIADB_RESTORE_FROM" ]; then
 	echo "Backup server available."
 
     # Take a backup using mariadb-backup
-    mariadb-backup --backup --user=$BACKUP_USER --password=$BACKUP_PASSWORD --host=$BACKUP_HOST --port=$BACKUP_PORT --target-dir=/tmp/backup/
+    mariadb-backup --backup --innodb-use-native-aio --parallel=4 --rsync --safe-slave-backup --user=$BACKUP_USER --password=$BACKUP_PASSWORD --host=$BACKUP_HOST --port=$BACKUP_PORT --target-dir=/tmp/backup/
 
     # Restore the backup in the container
 	echo "Preparing backup..."
 	mariadb-backup --prepare --target-dir=/tmp/backup/
 	echo "Stopping server..."
 	kill $mariadbd_pid
-	echo "Removing data directory..."
-	rm -rf /var/lib/mysql/
 	echo "Restoring backup..."
-	mariadb-backup --copy-back --target-dir=/tmp/backup/
+	mariadb-backup --move-back --force-non-empty-directories --datadir=/var/lib/mysql/ --target-dir=/tmp/backup/
 	chown -R mysql:mysql /var/lib/mysql
 	echo "Restarting mariadbd in the background..."
 	mariadbd --user=root --skip-networking &
