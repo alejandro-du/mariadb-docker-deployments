@@ -47,7 +47,7 @@ run_maxscale() {
 
 run_primary
 run_replica 2 3307
-#run_replica 3 3308
+run_replica 3 3308
 #run_maxscale
 
 echo "Done. Check the logs with ./logs.sh"
