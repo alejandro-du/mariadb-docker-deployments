@@ -1,14 +1,28 @@
+# Base image
 FROM rockylinux:8
-ARG CUSTOMER_DOWNLOAD_TOKEN
-ENV CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN
-COPY mariadb-es/copy/ /
-RUN curl -LsS https://dlm.mariadb.com/enterprise-release-helpers/mariadb_es_repo_setup > mariadb_es_repo_setup && \
-	chmod +x mariadb_es_repo_setup && \
-	./mariadb_es_repo_setup --token="$CUSTOMER_DOWNLOAD_TOKEN" --apply --skip-maxscale --skip-tools --mariadb-server-version="10.6" && \
-	yum install MariaDB-server MariaDB-backup procps-ng openssh-server openssh-clients sshpass -y && \
-	ssh-keygen -A && \
-	echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-	echo 'root:Password123!' | chpasswd && \
-	chmod +x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT docker-entrypoint.sh
+# The customer download token from https://customers.mariadb.com/downloads/token
+ARG CUSTOMER_DOWNLOAD_TOKEN
+
+# Store the customer dowonload token in an environment variable
+ENV CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN
+
+# Copy files from mariadb-es/copy/ directory to root
+COPY mariadb-es/copy/ /
+
+# Download the MariaDB Enterprise repository setup script
+RUN curl -LsS https://dlm.mariadb.com/enterprise-release-helpers/mariadb_es_repo_setup > mariadb_es_repo_setup && \
+	# Set execute permissions for .sh files
+	chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_es_repo_setup && \
+	# Setup the MariaDB Enterprise repository using the customer download token
+	./mariadb_es_repo_setup --token="$CUSTOMER_DOWNLOAD_TOKEN" --apply --skip-maxscale --skip-tools --mariadb-server-version="10.6" && \
+	yum install MariaDB-server MariaDB-backup -y
+
+# Expose MariaDB port
+EXPOSE 3306
+
+# Start MariaDB server
+CMD ["sh", "-c", "mariadbd --user=root --log-bin=mariadb-bin.log --server_id=$(shuf -i 2-1000000 -n 1)"]
+
+# Set entrypoint script
+ENTRYPOINT ["/docker-entrypoint-initdb.d/entrypoint.sh"]

@@ -6,8 +6,8 @@ run_primary() {
 	docker run --name mariadb-test-1 \
 		--detach \
 		--publish 3306:3306 \
-		--publish 9000:22 \
-		--env MARIADB_SETUP_PRIMARY="true" \
+		--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
+		--env MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123! \
 		piserver.local:5000/alejandrodu/mariadb-es
 	sleep 1
 }
@@ -19,9 +19,8 @@ run_replica() {
 	docker run --name mariadb-test-$1 \
 		--detach \
 		--publish $2:3306 \
-		--env MARIADB_RESTORE_SSH_HOST="$primary_ip" \
-		--env MARIADB_RESTORE_SSH_USER="root" \
-		--env MARIADB_RESTORE_SSH_PASSWORD="Password123!" \
+		--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
+		--env MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@$primary_ip:3306 \
 		piserver.local:5000/alejandrodu/mariadb-es
 	sleep 2
 }
@@ -48,7 +47,7 @@ run_maxscale() {
 
 run_primary
 run_replica 2 3307
-run_replica 3 3308
+#run_replica 3 3308
 #run_maxscale
 
 echo "Done. Check the logs with ./logs.sh"
