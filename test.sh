@@ -6,6 +6,8 @@ run_primary() {
 	docker run --name mariadb-test-1 \
 		--detach \
 		--publish 3306:3306 \
+		--env MARIADB_CREATE_DATABASE=demo \
+		--env MARIADB_CREATE_USER=user:Password123! \
 		--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
 		--env MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123! \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
@@ -20,6 +22,8 @@ run_replica() {
 	docker run --name mariadb-test-$1 \
 		--detach \
 		--publish $2:3306 \
+		--env MARIADB_CREATE_DATABASE=demo \
+		--env MARIADB_CREATE_USER=user:Password123! \
 		--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
 		--env MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@$primary_ip:3306 \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \

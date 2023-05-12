@@ -18,10 +18,32 @@ while ! mariadb -u root -e "select version()"; do
 done
 echo "Server started and available."
 
+# If MARIADB_CREATE_DATABASE is specified, create database
+if [ -n "$MARIADB_CREATE_DATABASE" ]; then
+	echo "Creating database..."
+    # Create database
+    mariadb -e "CREATE DATABASE $MARIADB_CREATE_DATABASE;"
+fi
+
+# If MARIADB_CREATE_USER is specified, create user
+if [ -n "$MARIADB_CREATE_USER" ]; then
+	echo "Creating user..."
+    # Extract user credentials from the MARIADB_CREATE_USER variable
+    USER=$(echo $MARIADB_CREATE_USER | cut -d':' -f1)
+    PASSWORD=$(echo $MARIADB_CREATE_USER | cut -d':' -f2)
+
+    # Create user
+    mariadb -e "CREATE USER '$USER'@'%' IDENTIFIED BY '$PASSWORD';"
+	if [ -n "$MARIADB_CREATE_DATABASE" ]; then
+		echo "Granting privileges to user..."
+	    mariadb -e "GRANT ALL PRIVILEGES ON $MARIADB_CREATE_DATABASE.* TO '$USER'@'%';"
+	fi
+fi
+
 # If MARIADB_CREATE_BACKUP_USER is specified, create backup user for backup operations
 if [ -n "$MARIADB_CREATE_BACKUP_USER" ]; then
 	echo "Creating backup user..."
-    # Extract backup user credentials from MARIADB_CREATE_BACKUP_USER variable
+    # Extract backup user credentials from the MARIADB_CREATE_BACKUP_USER variable
     BACKUP_USER=$(echo $MARIADB_CREATE_BACKUP_USER | cut -d':' -f1)
     BACKUP_PASSWORD=$(echo $MARIADB_CREATE_BACKUP_USER | cut -d':' -f2)
 
@@ -33,7 +55,7 @@ fi
 # If MARIADB_CREATE_REPLICATION_USER is specified, create user for replication
 if [ -n "$MARIADB_CREATE_REPLICATION_USER" ]; then
 	echo "Creating replication user..."
-    # Extract replication user credentials from MARIADB_CREATE_REPLICATION_USER variable
+    # Extract replication user credentials from the MARIADB_CREATE_REPLICATION_USER variable
     REPLICATION_USER=$(echo $MARIADB_CREATE_REPLICATION_USER | cut -d':' -f1)
     REPLICATION_PASSWORD=$(echo $MARIADB_CREATE_REPLICATION_USER | cut -d':' -f2)
 
@@ -45,7 +67,7 @@ fi
 # If MARIADB_CREATE_MAXSCALE_USER is specified, create user for MaxScale
 if [ -n "$MARIADB_CREATE_MAXSCALE_USER" ]; then
 	echo "Creating MaxScale user..."
-    # Extract MaxScale user credentials from MARIADB_CREATE_MAXSCALE_USER variable
+    # Extract MaxScale user credentials from the MARIADB_CREATE_MAXSCALE_USER variable
     MAXSCALE_USER=$(echo $MARIADB_CREATE_MAXSCALE_USER | cut -d':' -f1)
     MAXSCALE_PASSWORD=$(echo $MARIADB_CREATE_MAXSCALE_USER | cut -d':' -f2)
 
@@ -65,7 +87,7 @@ fi
 if [ -n "$MARIADB_RESTORE_FROM" ]; then
 	echo "Restoring database..."
 
-    # Extract backup server credentials from MARIADB_RESTORE_FROM variable
+    # Extract backup server credentials from the MARIADB_RESTORE_FROM variable
     BACKUP_USER=$(echo $MARIADB_RESTORE_FROM | cut -d':' -f1)
     BACKUP_PASSWORD=$(echo $MARIADB_RESTORE_FROM | cut -d':' -f2 | cut -d'@' -f1)
     BACKUP_HOST=$(echo $MARIADB_RESTORE_FROM | cut -d':' -f2 | cut -d'@' -f2)
@@ -110,7 +132,7 @@ fi
 # If MARIADB_REPLICATE_FROM is specified, configure replication
 if [ -n "$MARIADB_REPLICATE_FROM" ]; then
 	echo "Setting up replication..."
-    # Extract primary server credentials from MARIADB_REPLICATE_FROM variable
+    # Extract primary server credentials from the MARIADB_REPLICATE_FROM variable
     PRIMARY_USER=$(echo $MARIADB_REPLICATE_FROM | cut -d':' -f1)
     PRIMARY_PASSWORD=$(echo $MARIADB_REPLICATE_FROM | cut -d':' -f2 | cut -d'@' -f1)
     PRIMARY_HOST=$(echo $MARIADB_REPLICATE_FROM | cut -d':' -f2 | cut -d'@' -f2)
