@@ -1,10 +1,12 @@
 echo "************************ publish *************************"
-host="$1"
+host="piserver.local:5000"
 
-docker tag alejandrodu/mariadb-single-node ${host}alejandrodu/mariadb-single-node
-docker tag alejandrodu/mariadb-primary ${host}alejandrodu/mariadb-primary
-docker tag alejandrodu/mariadb-replica ${host}alejandrodu/mariadb-replica
+docker push ${host}/alejandrodu/mariadb-es
 
-docker push ${host}alejandrodu/mariadb-single-node
-docker push ${host}alejandrodu/mariadb-primary
-docker push ${host}alejandrodu/mariadb-replica
+#docker tag alejandrodu/mariadb-es-single-node ${host}alejandrodu/mariadb-es-single-node
+#docker tag alejandrodu/mariadb-es-primary ${host}alejandrodu/mariadb-es-primary
+#docker tag alejandrodu/mariadb-es-replica ${host}alejandrodu/mariadb-es-replica
+
+#docker push ${host}alejandrodu/mariadb-es-single-node
+#docker push ${host}alejandrodu/mariadb-es-primary
+#docker push ${host}alejandrodu/mariadb-es-replica
