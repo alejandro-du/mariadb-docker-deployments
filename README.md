@@ -1,6 +1,6 @@
 # mariadb-docker-deployments
 
-This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/builder) that I use to deploy [MariaDB Enterprise Server](https://mariadb.com) to run some of my example applications.
+This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/builder) that I use to deploy [MariaDB Enterprise Server](https://mariadb.com/products/enterprise/), [MariaDB Community Server](https://mariadb.com/products/community-server/), and [MariaDB MaxScale](https://mariadb.com/products/maxscale/) to run some of my example applications and demos.
 
 ## Requirements
 
@@ -47,4 +47,4 @@ You might have to list the new registry as insecure in the `/etc/docker/daemon.j
 
   ⚠️ **WARNING**: THESE IMAGES ARE NOT INTENDED FOR PRODUCTION ENVIRONMENTS!
 
-See the **[test.sh](test.sh)** and [replication.stack.yml](stacks/replication.stack.yml) files for examples on how to use the images.
+See the **[test.sh](test.sh)** and [mariadb.stack.yml](stacks/mariadb.stack.yml) files for examples on how to use the images.

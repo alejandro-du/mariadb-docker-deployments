@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" == "es" ]; then
+	image="mariadb-es"
+else
+	image="mariadb"
+fi
+
 run_primary() {
 	echo
 	echo "********************** run primary *********************"
@@ -11,7 +17,7 @@ run_primary() {
 		--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
 		--env MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123! \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
-		alejandrodu/mariadb-es
+		alejandrodu/$image
 	sleep 1
 }
 
@@ -27,7 +33,7 @@ run_replica() {
 		--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
 		--env MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@$primary_ip:3306 \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
-		alejandrodu/mariadb-es
+		alejandrodu/$image
 	sleep 2
 }
 
@@ -50,7 +56,7 @@ run_maxscale() {
 }
 
 ./clean.sh
-./build.sh
+./build.sh $1
 
 run_primary
 run_replica 2 3307
