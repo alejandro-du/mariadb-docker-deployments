@@ -1,3 +1,0 @@
-[mariadb]
-log_bin         = primary_log_bin
-server_id       = 1

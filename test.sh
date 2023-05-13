@@ -11,7 +11,7 @@ run_primary() {
 		--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
 		--env MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123! \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
-		piserver.local:5000/alejandrodu/mariadb-es
+		alejandrodu/mariadb-es
 	sleep 1
 }
 
@@ -27,7 +27,7 @@ run_replica() {
 		--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
 		--env MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@$primary_ip:3306 \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
-		piserver.local:5000/alejandrodu/mariadb-es
+		alejandrodu/mariadb-es
 	sleep 2
 }
 
@@ -45,7 +45,7 @@ run_maxscale() {
 		--env MARIADB_HOST_1=$host_ip_1 \
 		--env MARIADB_HOST_2=$host_ip_2 \
 		--env MARIADB_HOST_3=$host_ip_3 \
-		piserver.local:5000/alejandrodu/mariadb-maxscale
+		alejandrodu/mariadb-maxscale
 	sleep 2
 }
 
