@@ -1,0 +1,5 @@
+{
+  "insecure-registries": [
+	"your.hostname.local:5000"
+  ]
+}

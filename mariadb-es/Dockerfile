@@ -8,7 +8,7 @@ ARG CUSTOMER_DOWNLOAD_TOKEN
 ENV CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN
 
 # Copy files from mariadb-es/copy/ directory to root
-COPY mariadb-es/copy/ /
+COPY shared/ /
 
 # Download the MariaDB Enterprise repository setup script
 RUN curl -LsS https://dlm.mariadb.com/enterprise-release-helpers/mariadb_es_repo_setup > mariadb_es_repo_setup && \

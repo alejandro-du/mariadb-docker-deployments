@@ -2,7 +2,7 @@
 FROM rockylinux:8
 
 # Copy files from mariadb-es/copy/ directory to root
-COPY mariadb/copy/ /
+COPY shared/ /
 
 # Download the MariaDB repository setup script
 RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup > mariadb_repo_setup && \
