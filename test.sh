@@ -14,11 +14,10 @@ run_primary() {
 		--publish 3306:3306 \
 		--env MARIADB_CREATE_DATABASE=demo \
 		--env MARIADB_CREATE_USER=user:Password123! \
-		--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
 		--env MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123! \
 		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
 		alejandrodu/$image
-	sleep 1
+		#--env MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123! \
 }
 
 run_replica() {
@@ -28,13 +27,9 @@ run_replica() {
 	docker run --name mariadb-test-$1 \
 		--detach \
 		--publish $2:3306 \
-		--env MARIADB_CREATE_DATABASE=demo \
-		--env MARIADB_CREATE_USER=user:Password123! \
-		--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
 		--env MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@$primary_ip:3306 \
-		--env MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
 		alejandrodu/$image
-	sleep 2
+		#--env MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@$primary_ip:3306 \
 }
 
 run_maxscale() {
@@ -52,7 +47,6 @@ run_maxscale() {
 		--env MARIADB_HOST_2=$host_ip_2 \
 		--env MARIADB_HOST_3=$host_ip_3 \
 		alejandrodu/mariadb-maxscale
-	sleep 2
 }
 
 ./clean.sh

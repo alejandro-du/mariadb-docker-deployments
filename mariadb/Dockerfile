@@ -16,7 +16,7 @@ RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup > mariadb
 EXPOSE 3306
 
 # Start MariaDB server
-CMD ["sh", "-c", "mariadbd --user=root --log-bin=mariadb-bin.log --server_id=$(shuf -i 2-1000000 -n 1)"]
+CMD ["sh", "-c", "mariadbd --user=root --log-bin=mariadb-bin.log --binlog-format=mixed --gtid-strict-mode=1 --log-slave-updates=1 --skip-name-resolve=1"]
 
 # Set entrypoint script
 ENTRYPOINT ["/docker-entrypoint-initdb.d/entrypoint.sh"]
