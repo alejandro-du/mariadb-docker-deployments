@@ -7,7 +7,7 @@ else
 	host=$1
 fi
 
-docker tag alejandrodu/mariadb-es ${host}alejandrodu/mariadb
+docker tag alejandrodu/mariadb ${host}alejandrodu/mariadb
 docker push ${host}alejandrodu/mariadb
 
 docker tag alejandrodu/mariadb-maxscale ${host}alejandrodu/mariadb-maxscale
