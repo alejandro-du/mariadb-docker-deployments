@@ -8,8 +8,7 @@ set -m
 ####################################################################################################################################################
 start_mariadbd() {
 	echo "Starting mariadbd..."
-	echo "$cmd"
-	$cmd --server-id=$(shuf -i 2-1000000 -n 1) &
+	$cmd --server-id=$1 &
 
 	# Wait for the server to start
 	echo "Pinging server..."
@@ -37,8 +36,6 @@ secure_installation() {
 	echo "
 
 	n n y y y y" | mariadb-secure-installation
-
-	mariadb -u root -e "RESET MASTER"
 
 	echo "Done securing installation"
 }
@@ -209,23 +206,33 @@ replicate() {
 	fi
 }
 
-start_mariadbd
 
-if [ ! -f /container-started ]; then
-	restore
+####################################################################################################################################################
+# Script entry point
+####################################################################################################################################################
+
+restore
+
+if [ ! -f /server_id ]; then
+	server_id=$(shuf -i 2-1000000 -n 1)
+	echo "Using new server_id=$server_id"
+	start_mariadbd $server_id
 	secure_installation
+	mariadb -u root -e "RESET MASTER"
 	create_database
 	create_user
 	create_backup_user
 	create_replication_user
 	create_maxscale_user
 	replicate
-	touch /container-started
+	echo $server_id> /server_id
 	echo
 	echo "Script completed!"
 	echo
 else
-	echo "Script skipped!"
+	server_id=$(cat /server_id)
+	echo "Using existing server_id=$server_id"
+	start_mariadbd $server_id
 fi
 
 fg
