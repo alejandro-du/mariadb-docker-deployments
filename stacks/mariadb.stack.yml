@@ -1,41 +1,28 @@
 version: "3.9"
 services:
-  primary:
+  mariadb-1:
     image: alejandrodu/mariadb
     ports:
       - "3306:3306"
     environment:
       - MARIADB_CREATE_DATABASE=demo
       - MARIADB_CREATE_USER=user:Password123!
-      - MARIADB_CREATE_BACKUP_USER=backup_user:BackupPassword123!
       - MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123!
       - MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123!
 
-  replica1:
+  mariadb-2:
     image: alejandrodu/mariadb
     ports:
       - "3307:3306"
     environment:
-      - MARIADB_CREATE_DATABASE=demo
-      - MARIADB_CREATE_USER=user:Password123!
-      - MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@primary:3306
       - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@primary:3306
-      - MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123!
-    depends_on:
-      - primary
 
-  replica2:
+  mariadb-3:
     image: alejandrodu/mariadb
     ports:
       - "3308:3306"
     environment:
-      - MARIADB_CREATE_DATABASE=demo
-      - MARIADB_CREATE_USER=user:Password123!
-      - MARIADB_RESTORE_FROM=backup_user:BackupPassword123!@primary:3306
       - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@primary:3306
-      - MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123!
-    depends_on:
-      - primary
 
   maxscale:
     image: alejandrodu/mariadb-maxscale
@@ -49,7 +36,3 @@ services:
       - MARIADB_HOST_1=primary 3306
       - MARIADB_HOST_2=replica1 3306
       - MARIADB_HOST_3=replica2 3306
-    depends_on:
-      - primary
-      - replica1
-      - replica2
