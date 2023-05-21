@@ -2,13 +2,15 @@
 
 cmd="$3"
 set -m
+server_id=0
 
 ####################################################################################################################################################
 # Start mariadbd process
 ####################################################################################################################################################
 start_mariadbd() {
 	echo "Starting mariadbd..."
-	$cmd --server-id=$1 &
+	echo "Using server_id=$server_id"
+	$cmd --server_id=$server_id &
 
 	# Wait for the server to start
 	echo "Pinging server..."
@@ -214,9 +216,9 @@ replicate() {
 restore
 
 if [ ! -f /server_id ]; then
-	server_id=$(shuf -i 2-1000000 -n 1)
-	echo "Using new server_id=$server_id"
-	start_mariadbd $server_id
+	echo "Generating new server_id..."
+	server_id=`shuf -i 2-1000000 -n 1`
+	start_mariadbd
 	secure_installation
 	mariadb -u root -e "RESET MASTER"
 	create_database
@@ -231,7 +233,7 @@ if [ ! -f /server_id ]; then
 	echo
 else
 	server_id=$(cat /server_id)
-	echo "Using existing server_id=$server_id"
+	echo "Using existing server_id..."
 	start_mariadbd $server_id
 fi
 

@@ -9,9 +9,9 @@ maxscale_password=$(echo $MAXSCALE_USER | cut -d':' -f2)
 for ((n = 1; n <= 100; n++)); do
 	host="MARIADB_HOST_$n"
 	if ! [[ -z "${!host}" ]]; then
-		echo "Creating server mariadb-$n..."
-		servers="$servers mariadb-$n"
-		maxctrl create server mariadb-$n ${!host}
+		echo "Creating MariaDB server server-$n..."
+		servers="$servers server-$n"
+		maxctrl create server server-$n ${!host}
 	fi
 done
 
