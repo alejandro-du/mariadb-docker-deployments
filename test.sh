@@ -42,10 +42,12 @@ run_maxscale() {
 		--detach \
 		--publish 4000:4000 \
 		--publish 8989:8989 \
+		--publish 27017:27017 \
 		--env MAXSCALE_USER=maxscale_user:MaxScalePassword123! \
 		--env MARIADB_HOST_1=$host_ip_1 \
 		--env MARIADB_HOST_2=$host_ip_2 \
 		--env MARIADB_HOST_3=$host_ip_3 \
+		--env MAXSCALE_CREATE_NOSQL_LISTENER=user:Password123! \
 		alejandrodu/mariadb-maxscale
 }
 

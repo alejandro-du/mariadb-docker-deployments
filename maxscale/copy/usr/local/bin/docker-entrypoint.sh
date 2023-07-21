@@ -26,8 +26,18 @@ maxctrl create service query_router_service readwritesplit \
 	password=$maxscale_password \
 	--servers $servers
 
-echo "Creating SQL listener..."
+echo "Creating SQL listener sql_listener..."
 maxctrl create listener query_router_service sql_listener 4000
+
+if [ -n "$MAXSCALE_CREATE_NOSQL_LISTENER" ]; then
+	mariadb_user=$(echo $MAXSCALE_CREATE_NOSQL_LISTENER | cut -d':' -f1)
+	mariadb_password=$(echo $MAXSCALE_CREATE_NOSQL_LISTENER | cut -d':' -f2)
+	command="maxctrl create listener query_router_service $MAXSCALE_CREATE_NOSQL_LISTENER 27017 protocol=nosqlprotocol 'nosqlprotocol={\"user\":\"$mariadb_user\", \"password\":\"$mariadb_password\"}'"
+	echo "Creating NoSQL listener with $command..."
+	eval "$command"
+	echo "Done creating NoSQL listener $MAXSCALE_CREATE_NOSQL_LISTENER"
+fi
+
 
 echo "Restarting MaxScale..."
 PID=$(pgrep -x 'maxscale')
