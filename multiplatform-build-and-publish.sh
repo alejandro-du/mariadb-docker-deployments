@@ -20,8 +20,9 @@ if [ "$es" ]; then
 
 	case $yn in 
 		yes ) echo OK...
-			docker buildx build --push --build-arg CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN --platform linux/amd64 --file mariadb-es/Dockerfile --tag ${host}alejandrodu/mariadb-es .;;
-			docker buildx build --push --build-arg CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN --platform linux/arm64 --file mariadb-es/Dockerfile --tag ${host}alejandrodu/mariadb-es .;;
+			docker buildx build --push --build-arg CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN --platform linux/amd64 --file mariadb-es/Dockerfile --tag ${host}alejandrodu/mariadb-es .
+			docker buildx build --push --build-arg CUSTOMER_DOWNLOAD_TOKEN=$CUSTOMER_DOWNLOAD_TOKEN --platform linux/arm64 --file mariadb-es/Dockerfile --tag ${host}alejandrodu/mariadb-es .
+			;;
 		* ) echo exiting...
 	esac
 fi
