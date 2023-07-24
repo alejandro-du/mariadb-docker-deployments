@@ -1,3 +1,3 @@
 # Update and place this file in /etc/buildkit/buildkitd.toml in rootful mode, or ~/.config/buildkit/buildkitd.toml in rootless mode
-[registry."piserver.local:5000"]
+[registry."your.hostname.local:5000"]
   http = true
