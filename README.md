@@ -17,6 +17,12 @@ Build the images using the **build.sh** script:
 ./build.sh
 ```
 
+**Note:** If you want to build the MariaDB Enterprise image, you need to pass `es` as a parameter to `build.sh`. You also need to define the following environment variable using your [Customer Download Token](https://mariadb.com/docs/xpand/deploy/token/) value:
+
+```
+export CUSTOMER_DOWNLOAD_TOKEN=xxxxx-xxxx-xxxxx-xxx-xxxxx 
+```
+
 ### Publishing the images (optional)
 
 Create a private registry:
@@ -30,6 +36,7 @@ docker run --name docker-registry \
 	--env REGISTRY_STORAGE_DELETE_ENABLED=true \
 	registry:2
 ```
+
 Publish the images in the Docker registry by passing the registry host to the **publish.sh** script (add a trailing `/`):
 
 ```shell
@@ -43,6 +50,10 @@ You might have to list the new registry as insecure in the `/etc/docker/daemon.j
   "insecure-registries" : ["your.hostname.local:5000"]
 }
 ```
+
+  **Note:** If you want to publish the MariaDB Enterprise image, pass `es` as a parameter of `publish.sh` followed by the URL of your **private** Docker registry.
+
+⚠️ **WARNING:** Don't push the MariaDB Enterprise Docker image to a public or unsecured Docker registry if you don't want your private [Customer Download Token](https://mariadb.com/docs/xpand/deploy/token/) to be exposed.
 
 ## Using the images
 
