@@ -4,8 +4,9 @@ This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/
 
 ## Requirements
 
-  * A Linux environment (on Windows use [WSL](https://learn.microsoft.com/windows/wsl))
+  * A Linux or Mac environment (on Windows use [WSL](https://learn.microsoft.com/windows/wsl))
   * [Docker](https://www.docker.com)
+  * (Optional) A MariaDB [Customer Download Token](https://mariadb.com/docs/xpand/deploy/token/) if you want to use [MariaDB Enterprise](https://mariadb.com/products/enterprise/).
 
 ## Building the images
 
