@@ -32,7 +32,7 @@ maxctrl create listener query_router_service sql_listener 4000
 if [ -n "$MAXSCALE_CREATE_NOSQL_LISTENER" ]; then
 	mariadb_user=$(echo $MAXSCALE_CREATE_NOSQL_LISTENER | cut -d':' -f1)
 	mariadb_password=$(echo $MAXSCALE_CREATE_NOSQL_LISTENER | cut -d':' -f2)
-	command="maxctrl create listener query_router_service $MAXSCALE_CREATE_NOSQL_LISTENER 27017 protocol=nosqlprotocol 'nosqlprotocol={\"user\":\"$mariadb_user\", \"password\":\"$mariadb_password\"}'"
+	command="maxctrl create listener query_router_service nosql_listener 27017 protocol=nosqlprotocol 'nosqlprotocol={\"user\":\"$mariadb_user\", \"password\":\"$mariadb_password\"}'"
 	echo "Creating NoSQL listener with $command..."
 	eval "$command"
 	echo "Done creating NoSQL listener $MAXSCALE_CREATE_NOSQL_LISTENER"
