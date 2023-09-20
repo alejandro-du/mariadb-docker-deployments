@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   server-1:
-    image: alejandrodu/mariadb-es
-    ports:
-      - "3306:3306"
+    image: piserver.local:5000/alejandrodu/mariadb-es
     environment:
       - MARIADB_CREATE_DATABASE=demo
       - MARIADB_CREATE_USER=user:Password123!
@@ -11,16 +9,12 @@ services:
       - MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123!
 
   server-2:
-    image: alejandrodu/mariadb-es
-    ports:
-      - "3307:3306"
+    image: piserver.local:5000/alejandrodu/mariadb-es
     environment:
       - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@server-1:3306
 
   server-3:
-    image: alejandrodu/mariadb-es
-    ports:
-      - "3308:3306"
+    image: piserver.local:5000/alejandrodu/mariadb-es
     environment:
       - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@server-1:3306
 
@@ -28,7 +22,7 @@ services:
     image: alejandrodu/mariadb-maxscale
     command: --admin_host 0.0.0.0 --admin_secure_gui false
     ports:
-      - "4000:4000"
+      - "3306:4000"
       - "8989:8989"
       - "27017:27017"
     environment:
