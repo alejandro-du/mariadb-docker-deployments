@@ -9,7 +9,7 @@ RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup > mariadb
 	# Set execute permissions for .sh files
 	chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_repo_setup && \
 	# Setup the MariaDB repository
-	./mariadb_repo_setup --mariadb-server-version="mariadb-10.11" && \
+	./mariadb_repo_setup --mariadb-server-version="mariadb-11.3.1" && \
 	yum install MariaDB-server MariaDB-backup -y
 
 # Expose MariaDB port
