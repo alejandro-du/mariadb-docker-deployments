@@ -1,16 +1,17 @@
 # Base image
-FROM rockylinux:8
+FROM rockylinux:9.3
 
 # Copy files from mariadb-es/copy/ directory to root
 COPY shared/ /
 
 # Download the MariaDB repository setup script
-RUN curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup > mariadb_repo_setup && \
+RUN dnf install -y curl --allowerasing && \
+	curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup > mariadb_repo_setup && \
 	# Set execute permissions for .sh files
-	chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_repo_setup && \
+		chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_repo_setup && \
 	# Setup the MariaDB repository
 	./mariadb_repo_setup --mariadb-server-version="mariadb-11.3.1" && \
-	yum install MariaDB-server MariaDB-backup -y
+	dnf -y install MariaDB
 
 # Expose MariaDB port
 EXPOSE 3306
