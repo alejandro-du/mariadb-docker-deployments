@@ -15,7 +15,7 @@ RUN curl -LsS https://dlm.mariadb.com/enterprise-release-helpers/mariadb_es_repo
 	# Set execute permissions for .sh files
 	chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_es_repo_setup && \
 	# Setup the MariaDB Enterprise repository using the customer download token
-	./mariadb_es_repo_setup --token="$CUSTOMER_DOWNLOAD_TOKEN" --apply --skip-maxscale --skip-tools --mariadb-server-version="10.6.15-10" && \
+	./mariadb_es_repo_setup --token="$CUSTOMER_DOWNLOAD_TOKEN" --apply --skip-maxscale --skip-tools --mariadb-server-version="10.6.18-14" && \
 	yum install MariaDB-server MariaDB-backup -y
 
 # Expose MariaDB port

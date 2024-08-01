@@ -10,7 +10,7 @@ RUN dnf install -y curl --allowerasing && \
 	# Set execute permissions for .sh files
 		chmod +x /docker-entrypoint-initdb.d/*.sh mariadb_repo_setup && \
 	# Setup the MariaDB repository
-	./mariadb_repo_setup --mariadb-server-version="mariadb-11.3.1" && \
+	./mariadb_repo_setup --mariadb-server-version="mariadb-11.4.3" && \
 	dnf -y install MariaDB
 
 # Expose MariaDB port

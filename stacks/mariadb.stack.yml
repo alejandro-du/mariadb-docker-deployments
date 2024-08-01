@@ -1,24 +1,31 @@
 version: "3.9"
 services:
-  server-1:
+  mariadb-server-1:
+    container_name: mariadb-server-1
     image: alejandrodu/mariadb
     environment:
       - MARIADB_CREATE_DATABASE=demo
       - MARIADB_CREATE_USER=user:Password123!
       - MARIADB_CREATE_REPLICATION_USER=replication_user:ReplicationPassword123!
       - MARIADB_CREATE_MAXSCALE_USER=maxscale_user:MaxScalePassword123!
+    restart: unless-stopped
 
-  server-2:
+  mariadb-server-2:
+    container_name: mariadb-server-2
     image: alejandrodu/mariadb
     environment:
-      - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@server-1:3306
+      - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@mariadb-server-1:3306
+    restart: unless-stopped
 
-  server-3:
+  mariadb-server-3:
+    container_name: mariadb-server-3
     image: alejandrodu/mariadb
     environment:
-      - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@server-1:3306
+      - MARIADB_REPLICATE_FROM=replication_user:ReplicationPassword123!@mariadb-server-1:3306
+    restart: unless-stopped
 
   maxscale:
+    container_name: maxscale
     image: alejandrodu/mariadb-maxscale
     command: --admin_host 0.0.0.0 --admin_secure_gui false
     ports:
@@ -27,6 +34,7 @@ services:
       - "27017:27017"
     environment:
       - MAXSCALE_USER=maxscale_user:MaxScalePassword123!
-      - MARIADB_HOST_1=server-1 3306
-      - MARIADB_HOST_2=server-2 3306
-      - MARIADB_HOST_3=server-3 3306
+      - MARIADB_HOST_1=mariadb-server-1 3306
+      - MARIADB_HOST_2=mariadb-server-2 3306
+      - MARIADB_HOST_3=mariadb-server-3 3306
+    restart: unless-stopped
