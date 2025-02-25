@@ -1,5 +1,7 @@
 # mariadb-docker-deployments
 
+⚠️ **DEPRECATED: The official MariaDB image includes options to automatically configure replication (via the MARIADB_REPLICATION_USER, MARIADB_REPLICATION_PASSWORD_HASH, and MARIADB_REPLICATION_PASSWORD (environment variables)[https://mariadb.com/kb/en/mariadb-server-docker-official-image-environment-variables/]).**
+
 This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/builder) that I use to deploy [MariaDB Enterprise Server](https://mariadb.com/products/enterprise/), [MariaDB Community Server](https://mariadb.com/products/community-server/), and [MariaDB MaxScale](https://mariadb.com/products/maxscale/) to run some of my example applications and demos.
 
 ## Requirements
